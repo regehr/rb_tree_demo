@@ -12,7 +12,7 @@ HDRS = red_black_tree.h stack.h misc.h
 
 OBJS = red_black_tree.o stack.o test_red_black_tree.o misc.o
 
-OBJS2 = red_black_tree.o stack.o fuzz_red_black_tree.o misc.o slow_container.o
+OBJS2 = red_black_tree.o stack.o fuzz_red_black_tree.o misc.o container.o
 
 CC = gcc
 #CC = clang -fsanitize=integer

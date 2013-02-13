@@ -1,26 +1,26 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "slow_container.h"
+#include "container.h"
 
 #define MAX_SIZE 1000
 
 static int size;
 static int array[MAX_SIZE];
 
-void slowContainerCreate (void)
+void containerCreate (void)
 {
   size = 0;
 }
 
-void slowContainerInsert (int val)
+void containerInsert (int val)
 {
   assert (size < MAX_SIZE);
   array[size] = val;
   size++;
 }
 
-int slowContainerFind (int val)
+int containerFind (int val)
 {
   int i;
   for (i=0; i<size; i++) {
@@ -29,14 +29,14 @@ int slowContainerFind (int val)
   return 0;
 }
 
-int slowContainerRandom (int *res)
+int containerRandom (int *res)
 {
   if (size==0) return 0;
   *res = array[rand()%size];
   return 1;
 }
 
-void slowContainerDelete (int val)
+void containerDelete (int val)
 {
   int i, j;
   for (i=0; i<size; i++) {
@@ -57,15 +57,15 @@ static int compar (const void *a, const void *b)
   return ai > bi;
 }
 
-void slowContainerSort (void)
+void containerSort (void)
 {
   qsort (array, size, sizeof (int), compar);
 }
 
-int slowContainerPred (int val, int *ret)
+int containerPred (int val, int *ret)
 {
   int i;
-  slowContainerSort();
+  containerSort();
   for (i=0; i<size; i++) {
     if (array[i] == val) goto found;
   }
@@ -76,10 +76,10 @@ int slowContainerPred (int val, int *ret)
   return FOUND;
 }
 
-int slowContainerSucc (int val, int *ret)
+int containerSucc (int val, int *ret)
 {
   int i;
-  slowContainerSort();
+  containerSort();
   for (i=0; i<size; i++) {
     if (array[i] == val) goto found;
   }
@@ -90,10 +90,10 @@ int slowContainerSucc (int val, int *ret)
   return FOUND;
 }
 
-int slowContainerStartVal (int val, int val2)
+int containerStartVal (int val, int val2)
 {
   int i;
-  slowContainerSort();
+  containerSort();
   for (i=0; i<size; i++) {
     if (array[i]>=val && array[i]<=val2) {
       printf ("%d was found at %d\n", array[i], i);
@@ -104,7 +104,7 @@ int slowContainerStartVal (int val, int val2)
   return -1;
 }
 
-int slowContainerNextVal (int val, int i)
+int containerNextVal (int val, int i)
 {
   i++;
   if (i==size) return -1;
@@ -112,31 +112,31 @@ int slowContainerNextVal (int val, int i)
   return -1;
 }
 
-int slowContainerNext (int i)
+int containerNext (int i)
 {
   i++;
   if (i==size) return -1;
   return i;
 }
 
-int slowContainerStart (void)
+int containerStart (void)
 {
-  slowContainerSort();
+  containerSort();
   if (size==0) return -1;
   return 0;
 }
 
-int slowContainerGet (int i)
+int containerGet (int i)
 {
   assert (i>=0);
   assert (i<size);
   return array[i];
 }
 
-void slowContainerPrint (void)
+void containerPrint (void)
 {
   int i;
-  slowContainerSort();
+  containerSort();
   for (i=0; i<size; i++) {
     printf ("%d ", array[i]);
   }

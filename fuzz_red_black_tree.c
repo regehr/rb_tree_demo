@@ -3,7 +3,7 @@
 #include<ctype.h>
 #include <assert.h>
 #include <time.h>
-#include "slow_container.h"
+#include "container.h"
 
 #define FUZZ_REPS 1000
 #define FUZZ_RANGE 100
@@ -46,16 +46,16 @@ void InorderTreeVerify(rb_red_blk_tree* tree, rb_red_blk_node* x) {
   if (x != tree->nil) {
     int res;
     InorderTreeVerify(tree,x->left);
-    res = slowContainerGet (idx);
+    res = containerGet (idx);
     printf ("verifying %d %d\n", res, *(int *)x->key);
     assert (res==*(int *)x->key);
-    idx = slowContainerNext (idx);
+    idx = containerNext (idx);
     InorderTreeVerify(tree,x->right);
   }
 }
 
 void RBTreeVerify(rb_red_blk_tree* tree) {
-  idx = slowContainerStart();
+  idx = containerStart();
   InorderTreeVerify(tree,tree->root->left);
   assert (idx == -1);
 }
@@ -72,7 +72,7 @@ int main() {
   srand (time(NULL));
 
   tree=RBTreeCreate(IntComp,IntDest,InfoDest,IntPrint,InfoPrint);
-  slowContainerCreate ();
+  containerCreate ();
 
   for (i=0; i<FUZZ_REPS; i++) {
 
@@ -87,12 +87,12 @@ int main() {
 	  newKey = randomInt();
 
 	  /* fixme? */
-	  if (slowContainerFind (newKey)) goto again;
+	  if (containerFind (newKey)) goto again;
 
 	  newInt=(int*) malloc(sizeof(int));
 	  *newInt=newKey;
 	  RBTreeInsert(tree,newInt,0);
-	  slowContainerInsert(newKey);
+	  containerInsert(newKey);
 	}
 	break;
 	
@@ -100,11 +100,11 @@ int main() {
 	{
 	  newKey = randomInt();
 	  if ( ( newNode=RBExactQuery(tree,&newKey ) ) ) {
-	    assert (slowContainerFind (newKey));
+	    assert (containerFind (newKey));
 	    RBDelete(tree,newNode);/*assignment*/
-	    slowContainerDelete (newKey);
+	    containerDelete (newKey);
 	  } else {
-	    assert (!slowContainerFind (newKey));
+	    assert (!containerFind (newKey));
 	    printf("key not found in tree, no action taken\n");
 	  }
 	}
@@ -114,10 +114,10 @@ int main() {
 	{
 	  newKey = randomInt();
 	  if ( ( newNode = RBExactQuery(tree,&newKey) ) ) {/*assignment*/
-	    assert (slowContainerFind (newKey));
+	    assert (containerFind (newKey));
 	    printf("data found in tree at location %p\n", (void *)newNode);
 	  } else {
-	    assert (!slowContainerFind (newKey));
+	    assert (!containerFind (newKey));
 	    printf("data not in tree\n");
 	  }
 	}
@@ -126,7 +126,7 @@ int main() {
 	{
 	  int res, key2;
 	  newKey = randomInt();
-	  res = slowContainerPred(newKey, &key2);
+	  res = containerPred(newKey, &key2);
 	  if ( ( newNode = RBExactQuery(tree,&newKey) ) ) {/*assignment*/
 	    newNode=TreePredecessor(tree,newNode);
 	    if(tree->nil == newNode) {
@@ -147,7 +147,7 @@ int main() {
 	{
 	  int res, key2;
 	  newKey = randomInt();
-	  res = slowContainerSucc(newKey, &key2);
+	  res = containerSucc(newKey, &key2);
 	  if ( (newNode = RBExactQuery(tree,&newKey) ) ) {
 	    newNode=TreeSuccessor(tree,newNode);
 	    if(tree->nil == newNode) {
@@ -159,7 +159,7 @@ int main() {
 	      assert (*(int *)newNode->key == key2);	      
 	    }
 	  } else {
-	    assert (!slowContainerFind (newKey));
+	    assert (!containerFind (newKey));
 	    printf("data not in tree\n");
 	    assert (res==KEY_NOT_FOUND);
 	  }
@@ -173,7 +173,7 @@ int main() {
 	  newKey = randomInt();
 	  newKey2 = randomInt();
 	  printf ("iterating from %d to %d\n", newKey, newKey2);
-	  i = slowContainerStartVal (newKey,newKey2);
+	  i = containerStartVal (newKey,newKey2);
 	  enumResult=RBEnumerate(tree,&newKey,&newKey2);	  
 	  while ( (newNode = StackPop(enumResult)) ) {
 	    int k;
@@ -181,10 +181,10 @@ int main() {
 	    tree->PrintKey(newNode->key);	    
 	    printf ("\n");
 	    assert (i != -1);
-	    k = slowContainerGet(i);
+	    k = containerGet(i);
 	    printf (" %d\n", k);
 	    assert (k == *(int *)newNode->key);
-	    i = slowContainerNextVal (newKey2, i);
+	    i = containerNextVal (newKey2, i);
 	  }
 	  assert (i==-1);
 	  free(enumResult);
@@ -203,9 +203,9 @@ int main() {
   if (rand()%2 == 0) {
     while (1) {
       int val;
-      int res = slowContainerRandom (&val);
+      int res = containerRandom (&val);
       if (!res) break;
-      slowContainerDelete (val);
+      containerDelete (val);
       if (!(newNode=RBExactQuery(tree,&val))) assert (0);
       RBDelete(tree,newNode);
     }    
