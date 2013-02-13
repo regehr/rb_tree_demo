@@ -12,18 +12,25 @@ HDRS = red_black_tree.h stack.h misc.h
 
 OBJS = red_black_tree.o stack.o test_red_black_tree.o misc.o
 
+OBJS2 = red_black_tree.o stack.o fuzz_red_black_tree.o misc.o
+
 CC = gcc
 
 CFLAGS = -g -O0 -coverage -fprofile-arcs -Wall -pedantic
 
 PROGRAM = test_rb
 
+PROGRAM2 = fuzz_rb
+
 .PHONY:	mem_check clean
 
-all: $(PROGRAM)
+all: $(PROGRAM) $(PROGRAM2)
 
 $(PROGRAM): 	$(OBJS)
 		$(CC) $(CFLAGS) $(OBJS) -o $(PROGRAM) $(DMALLOC_LIB)
+
+$(PROGRAM2): 	$(OBJS2)
+		$(CC) $(CFLAGS) $(OBJS) -o $(PROGRAM2) $(DMALLOC_LIB)
 
 mem_check:	
 		@if [ -e makefile.txt ] ; then \
@@ -55,7 +62,7 @@ red_black_tree.o:	red_black_tree.h stack.h red_black_tree.c stack.c misc.h misc.
 stack.o:		stack.c stack.h misc.h misc.c
 
 clean:			
-	rm -f *.o *~ $(PROGRAM)
+	rm -f *.o *~ $(PROGRAM) $(PROGRAM2)
 
 
 
