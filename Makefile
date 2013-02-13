@@ -62,7 +62,8 @@ red_black_tree.o:	red_black_tree.h stack.h red_black_tree.c stack.c misc.h misc.
 stack.o:		stack.c stack.h misc.h misc.c
 
 clean:			
-	rm -f *.o *~ $(PROGRAM) $(PROGRAM2)
+	rm -f *.o *~ $(PROGRAM) $(PROGRAM2) *.gcda *.gcno *.gcov unfreed.txt
+
 
 
 
