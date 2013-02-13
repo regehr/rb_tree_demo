@@ -709,3 +709,4 @@ void checkRep (rb_red_blk_tree *tree)
   assert (!tree->root->left->red);
   checkRepHelper (tree->root->left, tree);
 }
+
