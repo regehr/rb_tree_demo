@@ -1,2 +1,2 @@
-void slowTreeCreate (void);
-void slowTreeInsert (int);
+void slowContainerCreate (void);
+void slowContainerInsert (int);

@@ -6,12 +6,12 @@
 int size;
 int array[MAX_SIZE];
 
-void slowTreeCreate (void)
+void slowContainerCreate (void)
 {
   size = 0;
 }
 
-void slowTreeInsert (int val)
+void slowContainerInsert (int val)
 {
   assert (size < MAX_SIZE);
   array[size] = val;
