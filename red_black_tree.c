@@ -685,6 +685,10 @@ int checkRepHelper (rb_red_blk_node *node, rb_red_blk_tree *t)
     assert (tmp==0 || tmp==-1);
     assert (node->right->parent == node);
   }
+  if (node->left != t->nil && node->right != t->nil) {
+    int tmp = t->Compare (node->left->key, node->right->key);
+    assert (tmp==0 || tmp==-1);
+  }
   
   /* both children of a red node are black */
   if (node->red) {
