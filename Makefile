@@ -30,7 +30,7 @@ $(PROGRAM): 	$(OBJS)
 		$(CC) $(CFLAGS) $(OBJS) -o $(PROGRAM) $(DMALLOC_LIB)
 
 $(PROGRAM2): 	$(OBJS2)
-		$(CC) $(CFLAGS) $(OBJS) -o $(PROGRAM2) $(DMALLOC_LIB)
+		$(CC) $(CFLAGS) $(OBJS2) -o $(PROGRAM2) $(DMALLOC_LIB)
 
 mem_check:	
 		@if [ -e makefile.txt ] ; then \
