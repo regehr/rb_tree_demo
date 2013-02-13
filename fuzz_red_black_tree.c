@@ -3,6 +3,7 @@
 #include<ctype.h>
 #include <assert.h>
 #include <time.h>
+#include "slow_tree.h"
 
 #define FUZZ_REPS 1000
 #define FUZZ_RANGE 100
@@ -51,6 +52,8 @@ int main() {
   srand (time(NULL));
 
   tree=RBTreeCreate(IntComp,IntDest,InfoDest,IntPrint,InfoPrint);
+  slowTreeCreate ();
+
   for (i=0; i<FUZZ_REPS; i++) {
 
     checkRep (tree);
@@ -64,6 +67,7 @@ int main() {
 	  newInt=(int*) malloc(sizeof(int));
 	  *newInt=newKey;
 	  RBTreeInsert(tree,newInt,0);
+	  slowTreeInsert(newKey);
 	}
 	break;
 	
