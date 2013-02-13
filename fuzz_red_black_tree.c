@@ -52,6 +52,9 @@ int main() {
 
   tree=RBTreeCreate(IntComp,IntDest,InfoDest,IntPrint,InfoPrint);
   for (i=0; i<FUZZ_REPS; i++) {
+
+    checkRep (tree);
+
     option = 1 + rand()%7;
     switch(option)
       {

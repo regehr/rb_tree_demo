@@ -1,4 +1,5 @@
 #include "red_black_tree.h"
+#include <assert.h>
 
 /***********************************************************************/
 /*  FUNCTION:  RBTreeCreate */
@@ -662,10 +663,45 @@ stk_stack* RBEnumerate(rb_red_blk_tree* tree, void* low, void* high) {
   }
   return(enumResultStack);
 }
-      
-    
+
+
+int checkRepHelper (rb_red_blk_node *node, rb_red_blk_tree *t)
+{
+  int left_black_cnt, right_black_cnt;
+
+  /* by convention sentinel nodes point to nil instead of null */
+  assert (node);
+  if (node == t->nil) return 0;
   
+  /* the tree order must be respected */
+  /* parents and children must point to each other */
+  if (node->left != t->nil) {
+    int tmp = t->Compare (node->key, node->left->key);
+    assert (tmp==0 || tmp==1);
+    assert (node->left->parent == node);
+  }
+  if (node->right != t->nil) { 
+    int tmp = t->Compare (node->key, node->right->key);
+    assert (tmp==0 || tmp==-1);
+    assert (node->right->parent == node);
+  }
   
+  /* both children of a red node are black */
+  if (node->red) {
+    assert (!node->left->red);
+    assert (!node->right->red);
+  }
 
+  /* every root->leaf path has the same number of black nodes */
+  left_black_cnt = checkRepHelper (node->left, t);
+  right_black_cnt = checkRepHelper (node->right, t);
+  assert (left_black_cnt == right_black_cnt);
+  return left_black_cnt + (node->red ? 0 : 1);
+}
 
-
+void checkRep (rb_red_blk_tree *tree)
+{
+  /* root is black by convention */
+  assert (!tree->root->left->red);
+  checkRepHelper (tree->root->left, tree);
+}
