@@ -1,9 +1,5 @@
 #include "stack.h"
 
-int StackNotEmpty(stk_stack * theStack) {
-  return( theStack ? (int) theStack->top : 0);
-}
-
 stk_stack * StackJoin(stk_stack * stack1, stk_stack * stack2) {
   if (!stack1->tail) {
     free(stack1);

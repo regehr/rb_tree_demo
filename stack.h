@@ -39,5 +39,3 @@ stk_stack * StackJoin(stk_stack * stack1, stk_stack * stack2);
 stk_stack * StackCreate();
 void StackPush(stk_stack * theStack, DATA_TYPE newInfoPointer);
 void * StackPop(stk_stack * theStack);
-int StackNotEmpty(stk_stack *);
-
