@@ -49,12 +49,14 @@ void *randomVoidP (void)
   int i;
   for (i=0; i<sizeof(p); i++) {
     p <<= 8;
-    p += rand()%256;
+    p |= rand()%256;
   }
   return (void *)p;
 }
 
 int idx;
+
+int nodups;
 
 void InorderTreeVerify(rb_red_blk_tree* tree, rb_red_blk_node* x) {
   if (x != tree->nil) {
@@ -62,7 +64,7 @@ void InorderTreeVerify(rb_red_blk_tree* tree, rb_red_blk_node* x) {
     InorderTreeVerify(tree,x->left);
     e = containerGet (idx);
     assert (e.val == *(int *)x->key);
-    assert (e.info == x->info);
+    if (nodups) assert (e.info == x->info);
     idx = containerNext (idx);
     InorderTreeVerify(tree,x->right);
   }
@@ -83,23 +85,20 @@ static void fuzzit (void)
   rb_red_blk_node* newNode;
   rb_red_blk_tree* tree;
   int i;
-  int nodups;
+  int fuzz_reps;
+
+  fuzz_reps = rand()%FUZZ_REPS;
 
   tree=RBTreeCreate(IntComp,IntDest,InfoDest,IntPrint,InfoPrint);
   containerCreate ();
   nodups = rand()%2;
-  switch (rand()%2) {
-  case 0:
-    FUZZ_RANGE = 1 + rand()%FUZZ_REPS;
-    break;
-  case 1:
+  if (rand()%2 == 0) {
+    FUZZ_RANGE = 1 + rand()%fuzz_reps;
+  } else {
     FUZZ_RANGE = 1 + rand()%RAND_MAX;
-    break;
-  default:
-    assert (0);
   }
 
-  for (i=0; i<FUZZ_REPS; i++) {
+  for (i=0; i<fuzz_reps; i++) {
 
     checkRep (tree);
 
@@ -200,7 +199,7 @@ static void fuzzit (void)
 	    assert (i != -1);
 	    e = containerGet(i);
 	    assert (e.val == *(int *)newNode->key);
-	    assert (e.info == newNode->info);
+	    if (nodups) assert (e.info == newNode->info);
 	    i = containerNextVal (newKey2, i);
 	  }
 	  assert (i==-1);

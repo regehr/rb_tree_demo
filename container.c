@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include "container.h"
 
-#define MAX_SIZE 1000
+#define MAX_SIZE 10000
 
 static int size;
 static struct elt_t array[MAX_SIZE];
@@ -53,8 +53,8 @@ void containerDelete (int val)
 
 static int compar (const void *a, const void *b)
 {
-  int ai = * ((int *) a);
-  int bi = * ((int *) b);
+  int ai = ((struct elt_t *) a)->val;
+  int bi = ((struct elt_t *) b)->val;
   return ai > bi;
 }
 
