@@ -18,6 +18,7 @@ CC = gcc
 #CC = clang -fsanitize=integer
 
 CFLAGS = -g -O0 -coverage -fprofile-arcs -Wall -pedantic
+#CFLAGS = -O3 -Wall -pedantic
 
 PROGRAM = test_rb
 
