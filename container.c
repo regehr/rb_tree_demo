@@ -96,11 +96,9 @@ int containerStartVal (int val, int val2)
   containerSort();
   for (i=0; i<size; i++) {
     if (array[i]>=val && array[i]<=val2) {
-      printf ("%d was found at %d\n", array[i], i);
       return i;
     }
   }
-  printf ("%d wasn't found\n", val);
   return -1;
 }
 

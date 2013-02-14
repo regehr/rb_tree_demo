@@ -48,7 +48,6 @@ void InorderTreeVerify(rb_red_blk_tree* tree, rb_red_blk_node* x) {
     int res;
     InorderTreeVerify(tree,x->left);
     res = containerGet (idx);
-    printf ("verifying %d %d\n", res, *(int *)x->key);
     assert (res==*(int *)x->key);
     idx = containerNext (idx);
     InorderTreeVerify(tree,x->right);
@@ -105,7 +104,6 @@ static void fuzzit (void)
 	    containerDelete (newKey);
 	  } else {
 	    assert (!containerFind (newKey));
-	    printf("key not found in tree, no action taken\n");
 	  }
 	}
 	break;
@@ -115,10 +113,8 @@ static void fuzzit (void)
 	  newKey = randomInt();
 	  if ( ( newNode = RBExactQuery(tree,&newKey) ) ) {/*assignment*/
 	    assert (containerFind (newKey));
-	    printf("data found in tree at location %p\n", (void *)newNode);
 	  } else {
 	    assert (!containerFind (newKey));
-	    printf("data not in tree\n");
 	  }
 	}
 	break;
@@ -130,15 +126,12 @@ static void fuzzit (void)
 	  if ( ( newNode = RBExactQuery(tree,&newKey) ) ) {/*assignment*/
 	    newNode=TreePredecessor(tree,newNode);
 	    if(tree->nil == newNode) {
-	      printf("there is no predecessor for that node (it is a minimum)\n");
 	      assert (res==NO_PRED_OR_SUCC);
 	    } else {
-	      printf("predecessor has key %i, expected %d\n",*(int*)newNode->key, key2);
 	      assert (res==FOUND);
 	      assert (*(int *)newNode->key == key2);
 	    }
 	  } else {
-	    printf("data not in tree\n");
 	    assert (res==KEY_NOT_FOUND);
 	  } 
 	}
@@ -151,16 +144,13 @@ static void fuzzit (void)
 	  if ( (newNode = RBExactQuery(tree,&newKey) ) ) {
 	    newNode=TreeSuccessor(tree,newNode);
 	    if(tree->nil == newNode) {
-	      printf("there is no successor for that node (it is a maximum)\n");
 	      assert (res==NO_PRED_OR_SUCC);
 	    } else {
-	      printf("successor has key %i\n",*(int*)newNode->key);
 	      assert (res==FOUND);
 	      assert (*(int *)newNode->key == key2);	      
 	    }
 	  } else {
 	    assert (!containerFind (newKey));
-	    printf("data not in tree\n");
 	    assert (res==KEY_NOT_FOUND);
 	  }
 	}
@@ -168,21 +158,14 @@ static void fuzzit (void)
       case 6:
 	{
 	  int i;
-	  printf ("tree contents:");
-	  RBTreePrint(tree);
 	  newKey = randomInt();
 	  newKey2 = randomInt();
-	  printf ("iterating from %d to %d\n", newKey, newKey2);
 	  i = containerStartVal (newKey,newKey2);
 	  enumResult=RBEnumerate(tree,&newKey,&newKey2);	  
 	  while ( (newNode = StackPop(enumResult)) ) {
 	    int k;
-	    printf ("rbtree: ");
-	    tree->PrintKey(newNode->key);	    
-	    printf ("\n");
 	    assert (i != -1);
 	    k = containerGet(i);
-	    printf (" %d\n", k);
 	    assert (k == *(int *)newNode->key);
 	    i = containerNextVal (newKey2, i);
 	  }
