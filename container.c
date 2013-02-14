@@ -6,17 +6,18 @@
 #define MAX_SIZE 1000
 
 static int size;
-static int array[MAX_SIZE];
+static struct elt_t array[MAX_SIZE];
 
 void containerCreate (void)
 {
   size = 0;
 }
 
-void containerInsert (int val)
+void containerInsert (int val, void *info)
 {
   assert (size < MAX_SIZE);
-  array[size] = val;
+  array[size].val = val;
+  array[size].info = info;
   size++;
 }
 
@@ -24,7 +25,7 @@ int containerFind (int val)
 {
   int i;
   for (i=0; i<size; i++) {
-    if (array[i] == val) return 1;
+    if (array[i].val == val) return 1;
   }
   return 0;
 }
@@ -32,7 +33,7 @@ int containerFind (int val)
 int containerRandom (int *res)
 {
   if (size==0) return 0;
-  *res = array[rand()%size];
+  *res = array[rand()%size].val;
   return 1;
 }
 
@@ -40,7 +41,7 @@ void containerDelete (int val)
 {
   int i, j;
   for (i=0; i<size; i++) {
-    if (array[i] == val) goto remove;
+    if (array[i].val == val) goto remove;
   }
   assert (0);
  remove:
@@ -59,7 +60,7 @@ static int compar (const void *a, const void *b)
 
 void containerSort (void)
 {
-  qsort (array, size, sizeof (int), compar);
+  qsort (array, size, sizeof (struct elt_t), compar);
 }
 
 int containerPred (int val, int *ret)
@@ -67,12 +68,12 @@ int containerPred (int val, int *ret)
   int i;
   containerSort();
   for (i=0; i<size; i++) {
-    if (array[i] == val) goto found;
+    if (array[i].val == val) goto found;
   }
   return KEY_NOT_FOUND;
  found:
   if (i==0) return NO_PRED_OR_SUCC;
-  *ret = array[i-1];
+  *ret = array[i-1].val;
   return FOUND;
 }
 
@@ -81,12 +82,12 @@ int containerSucc (int val, int *ret)
   int i;
   containerSort();
   for (i=0; i<size; i++) {
-    if (array[i] == val) goto found;
+    if (array[i].val == val) goto found;
   }
   return KEY_NOT_FOUND;
  found:
   if (i==(size-1)) return NO_PRED_OR_SUCC;
-  *ret = array[i+1];
+  *ret = array[i+1].val;
   return FOUND;
 }
 
@@ -95,7 +96,7 @@ int containerStartVal (int val, int val2)
   int i;
   containerSort();
   for (i=0; i<size; i++) {
-    if (array[i]>=val && array[i]<=val2) {
+    if (array[i].val >= val && array[i].val <= val2) {
       return i;
     }
   }
@@ -106,7 +107,7 @@ int containerNextVal (int val, int i)
 {
   i++;
   if (i==size) return -1;
-  if (array[i] <= val) return i;
+  if (array[i].val <= val) return i;
   return -1;
 }
 
@@ -124,7 +125,7 @@ int containerStart (void)
   return 0;
 }
 
-int containerGet (int i)
+struct elt_t containerGet (int i)
 {
   assert (i>=0);
   assert (i<size);
@@ -136,7 +137,7 @@ void containerPrint (void)
   int i;
   containerSort();
   for (i=0; i<size; i++) {
-    printf ("%d ", array[i]);
+    printf ("%d ", array[i].val);
   }
   printf ("\n");
 }

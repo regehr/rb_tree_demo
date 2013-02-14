@@ -58,10 +58,11 @@ int idx;
 
 void InorderTreeVerify(rb_red_blk_tree* tree, rb_red_blk_node* x) {
   if (x != tree->nil) {
-    int res;
+    struct elt_t e;
     InorderTreeVerify(tree,x->left);
-    res = containerGet (idx);
-    assert (res==*(int *)x->key);
+    e = containerGet (idx);
+    assert (e.val == *(int *)x->key);
+    assert (e.info == x->info);
     idx = containerNext (idx);
     InorderTreeVerify(tree,x->right);
   }
@@ -108,6 +109,7 @@ static void fuzzit (void)
       {
       case 1:
 	{
+	  void *p;
 	  newKey = randomInt();
 
 	  if (nodups) {
@@ -116,8 +118,9 @@ static void fuzzit (void)
 
 	  newInt=(int*) malloc(sizeof(int));
 	  *newInt=newKey;
-	  RBTreeInsert(tree,newInt,randomVoidP());
-	  containerInsert(newKey);
+	  p = randomVoidP();
+	  RBTreeInsert(tree,newInt,p);
+	  containerInsert(newKey,p);
 	}
 	break;
 	
@@ -193,10 +196,11 @@ static void fuzzit (void)
 	  i = containerStartVal (newKey,newKey2);
 	  enumResult=RBEnumerate(tree,&newKey,&newKey2);	  
 	  while ( (newNode = StackPop(enumResult)) ) {
-	    int k;
+	    struct elt_t e;
 	    assert (i != -1);
-	    k = containerGet(i);
-	    assert (k == *(int *)newNode->key);
+	    e = containerGet(i);
+	    assert (e.val == *(int *)newNode->key);
+	    assert (e.info == newNode->info);
 	    i = containerNextVal (newKey2, i);
 	  }
 	  assert (i==-1);

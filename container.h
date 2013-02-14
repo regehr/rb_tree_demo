@@ -4,8 +4,13 @@ enum result {
   FOUND
 };
 
+struct elt_t {
+  int val;
+  void *info;
+};
+
 void containerCreate (void);
-void containerInsert (int);
+void containerInsert (int, void *);
 int containerFind (int);
 void containerDelete (int);
 int containerPred (int, int *);
@@ -15,5 +20,5 @@ int containerStart (void);
 int containerStartVal (int, int);
 int containerNextVal (int, int);
 int containerNext (int);
-int containerGet (int);
+struct elt_t containerGet (int);
 int containerRandom (int *);
