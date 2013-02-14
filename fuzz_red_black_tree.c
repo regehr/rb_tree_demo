@@ -5,7 +5,7 @@
 #include <time.h>
 #include "container.h"
 
-#define META_REPS 100
+#define META_REPS 1000
 #define FUZZ_REPS 1000
 #define FUZZ_RANGE 100
 
@@ -214,8 +214,14 @@ static void fuzzit (void)
 }
 
 int main() {
+  int i;
+
   srand (time(NULL));
-  fuzzit();
+
+  for (i=0; i<META_REPS; i++) {
+    fuzzit();
+  }
+
   printf ("Done fuzzing\n");
   return 0;
 }
