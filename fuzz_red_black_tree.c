@@ -7,7 +7,6 @@
 
 #define META_REPS 1000
 #define FUZZ_REPS 1000
-#define FUZZ_RANGE 100
 
 
 /*  this file has functions to test a red-black tree of integers */
@@ -35,6 +34,8 @@ void InfoPrint(void* a) {
 void InfoDest(void *a){
   ;
 }
+
+int FUZZ_RANGE;
 
 int randomInt (void)
 {
@@ -74,6 +75,16 @@ static void fuzzit (void)
   tree=RBTreeCreate(IntComp,IntDest,InfoDest,IntPrint,InfoPrint);
   containerCreate ();
   nodups = rand()%2;
+  switch (rand()%2) {
+  case 0:
+    FUZZ_RANGE = 1 + rand()%FUZZ_REPS;
+    break;
+  case 1:
+    FUZZ_RANGE = 1 + rand()%RAND_MAX;
+    break;
+  default:
+    assert (0);
+  }
 
   for (i=0; i<FUZZ_REPS; i++) {
 
