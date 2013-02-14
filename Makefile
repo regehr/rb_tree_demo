@@ -14,11 +14,11 @@ OBJS = red_black_tree.o stack.o test_red_black_tree.o misc.o
 
 OBJS2 = red_black_tree.o stack.o fuzz_red_black_tree.o misc.o container.o
 
-CC = gcc
-#CC = clang -fsanitize=integer
+#CC = gcc
+CC = clang -fsanitize=integer
 
 #CFLAGS = -g -O0 -coverage -fprofile-arcs -Wall -pedantic
-CFLAGS = -Ofast -flto -Wall -pedantic
+CFLAGS = -O3 -Wall -pedantic
 
 PROGRAM = test_rb
 

@@ -87,7 +87,7 @@ static void fuzzit (void)
   int i;
   int fuzz_reps;
 
-  fuzz_reps = rand()%FUZZ_REPS;
+  fuzz_reps = 1+rand()%FUZZ_REPS;
 
   tree=RBTreeCreate(IntComp,IntDest,InfoDest,IntPrint,InfoPrint);
   containerCreate ();
