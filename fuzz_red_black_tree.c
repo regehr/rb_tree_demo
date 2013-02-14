@@ -3,6 +3,7 @@
 #include<ctype.h>
 #include <assert.h>
 #include <time.h>
+#include <stdint.h>
 #include "container.h"
 
 #define META_REPS 1000
@@ -40,6 +41,17 @@ int FUZZ_RANGE;
 int randomInt (void)
 {
   return rand()%FUZZ_RANGE;
+}
+
+void *randomVoidP (void)
+{
+  uintptr_t p = 0;
+  int i;
+  for (i=0; i<sizeof(p); i++) {
+    p <<= 8;
+    p += rand()%256;
+  }
+  return (void *)p;
 }
 
 int idx;
@@ -104,7 +116,7 @@ static void fuzzit (void)
 
 	  newInt=(int*) malloc(sizeof(int));
 	  *newInt=newKey;
-	  RBTreeInsert(tree,newInt,0);
+	  RBTreeInsert(tree,newInt,randomVoidP());
 	  containerInsert(newKey);
 	}
 	break;
