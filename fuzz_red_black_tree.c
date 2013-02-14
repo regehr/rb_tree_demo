@@ -5,6 +5,7 @@
 #include <time.h>
 #include "container.h"
 
+#define META_REPS 100
 #define FUZZ_REPS 1000
 #define FUZZ_RANGE 100
 
@@ -60,7 +61,8 @@ void RBTreeVerify(rb_red_blk_tree* tree) {
   assert (idx == -1);
 }
 
-int main() {
+static void fuzzit (void)
+{
   stk_stack* enumResult;
   int option=0;
   int newKey,newKey2;
@@ -68,8 +70,6 @@ int main() {
   rb_red_blk_node* newNode;
   rb_red_blk_tree* tree;
   int i;
-
-  srand (time(NULL));
 
   tree=RBTreeCreate(IntComp,IntDest,InfoDest,IntPrint,InfoPrint);
   containerCreate ();
@@ -211,6 +211,11 @@ int main() {
     }    
   }
   RBTreeDestroy(tree);
+}
+
+int main() {
+  srand (time(NULL));
+  fuzzit();
   printf ("Done fuzzing\n");
   return 0;
 }
