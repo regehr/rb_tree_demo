@@ -69,9 +69,11 @@ static void fuzzit (void)
   rb_red_blk_node* newNode;
   rb_red_blk_tree* tree;
   int i;
+  int nodups;
 
   tree=RBTreeCreate(IntComp,IntDest,InfoDest,IntPrint,InfoPrint);
   containerCreate ();
+  nodups = rand()%2;
 
   for (i=0; i<FUZZ_REPS; i++) {
 
@@ -85,8 +87,9 @@ static void fuzzit (void)
 	{
 	  newKey = randomInt();
 
-	  /* fixme? */
-	  if (containerFind (newKey)) goto again;
+	  if (nodups) {
+	    if (containerFind (newKey)) goto again;
+	  }
 
 	  newInt=(int*) malloc(sizeof(int));
 	  *newInt=newKey;
@@ -125,11 +128,13 @@ static void fuzzit (void)
 	  res = containerPred(newKey, &key2);
 	  if ( ( newNode = RBExactQuery(tree,&newKey) ) ) {/*assignment*/
 	    newNode=TreePredecessor(tree,newNode);
-	    if(tree->nil == newNode) {
-	      assert (res==NO_PRED_OR_SUCC);
-	    } else {
-	      assert (res==FOUND);
-	      assert (*(int *)newNode->key == key2);
+	    if (nodups) {
+	      if(tree->nil == newNode) {
+		assert (res==NO_PRED_OR_SUCC);
+	      } else {
+		assert (res==FOUND);
+		assert (*(int *)newNode->key == key2);
+	      }
 	    }
 	  } else {
 	    assert (res==KEY_NOT_FOUND);
@@ -143,11 +148,13 @@ static void fuzzit (void)
 	  res = containerSucc(newKey, &key2);
 	  if ( (newNode = RBExactQuery(tree,&newKey) ) ) {
 	    newNode=TreeSuccessor(tree,newNode);
-	    if(tree->nil == newNode) {
-	      assert (res==NO_PRED_OR_SUCC);
-	    } else {
-	      assert (res==FOUND);
-	      assert (*(int *)newNode->key == key2);	      
+	    if (nodups) {
+	      if(tree->nil == newNode) {
+		assert (res==NO_PRED_OR_SUCC);
+	      } else {
+		assert (res==FOUND);
+		assert (*(int *)newNode->key == key2);	      
+	      }
 	    }
 	  } else {
 	    assert (!containerFind (newKey));
