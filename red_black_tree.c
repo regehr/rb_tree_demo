@@ -4,7 +4,7 @@
 /***********************************************************************/
 /*  FUNCTION:  RBTreeCreate */
 /**/
-/*  INPUTS:  All the inputs are names of functions.  CompFunc takes to */
+/*  INPUTS:  All the inputs are names of functions.  CompFunc takes two */
 /*  void pointers to keys and returns 1 if the first arguement is */
 /*  "greater than" the second.   DestFunc takes a pointer to a key and */
 /*  destroys it in the appropriate manner when the node containing that */
@@ -105,7 +105,7 @@ void LeftRotate(rb_red_blk_tree* tree, rb_red_blk_node* x) {
 
 
 /***********************************************************************/
-/*  FUNCTION:  RighttRotate */
+/*  FUNCTION:  RightRotate */
 /**/
 /*  INPUTS:  This takes a tree so that it can access the appropriate */
 /*           root and nil pointers, and the node to rotate on. */
@@ -632,7 +632,7 @@ void RBDelete(rb_red_blk_tree* tree, rb_red_blk_node* z){
 
 
 /***********************************************************************/
-/*  FUNCTION:  RBDEnumerate */
+/*  FUNCTION:  RBEnumerate */
 /**/
 /*    INPUTS:  tree is the tree to look for keys >= low */
 /*             and <= high with respect to the Compare function */
