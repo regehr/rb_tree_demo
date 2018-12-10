@@ -51,9 +51,9 @@ void InorderTreeVerify(rb_red_blk_tree *tree, rb_red_blk_node *x) {
     struct elt_t e;
     InorderTreeVerify(tree, x->left);
     e = containerGet(idx);
-    assert(e.val == *(int *)x->key);
+    Assert(e.val == *(int *)x->key, "value mismatch");
     if (nodups)
-      assert(e.info == x->info);
+      Assert(e.info == x->info, "info mismatch");
     idx = containerNext(idx);
     InorderTreeVerify(tree, x->right);
   }
@@ -62,7 +62,7 @@ void InorderTreeVerify(rb_red_blk_tree *tree, rb_red_blk_node *x) {
 void RBTreeVerify(rb_red_blk_tree *tree) {
   idx = containerStart();
   InorderTreeVerify(tree, tree->root->left);
-  assert(idx == -1);
+  Assert(idx == -1, "index should be -1");
 }
 
 static void fuzzit(void) {
@@ -112,20 +112,20 @@ static void fuzzit(void) {
     case 2: {
       newKey = randomInt();
       if ((newNode = RBExactQuery(tree, &newKey))) {
-        assert(containerFind(newKey));
+        Assert(containerFind(newKey), "find");
         RBDelete(tree, newNode); /*assignment*/
         containerDelete(newKey);
       } else {
-        assert(!containerFind(newKey));
+        Assert(!containerFind(newKey), "should not be found");
       }
     } break;
 
     case 3: {
       newKey = randomInt();
       if ((newNode = RBExactQuery(tree, &newKey))) { /*assignment*/
-        assert(containerFind(newKey));
+        Assert(containerFind(newKey), "should be found");
       } else {
-        assert(!containerFind(newKey));
+        Assert(!containerFind(newKey), "should not be found");
       }
     } break;
     case 4: {
@@ -136,14 +136,14 @@ static void fuzzit(void) {
         newNode = TreePredecessor(tree, newNode);
         if (nodups) {
           if (tree->nil == newNode) {
-            assert(res == NO_PRED_OR_SUCC);
+            Assert(res == NO_PRED_OR_SUCC, "pred");
           } else {
-            assert(res == FOUND);
-            assert(*(int *)newNode->key == key2);
+            Assert(res == FOUND, "res mismatch");
+            Assert(*(int *)newNode->key == key2, "key mismatch");
           }
         }
       } else {
-        assert(res == KEY_NOT_FOUND);
+        Assert(res == KEY_NOT_FOUND, "must not be found");
       }
     } break;
     case 5: {
@@ -154,15 +154,15 @@ static void fuzzit(void) {
         newNode = TreeSuccessor(tree, newNode);
         if (nodups) {
           if (tree->nil == newNode) {
-            assert(res == NO_PRED_OR_SUCC);
+            Assert(res == NO_PRED_OR_SUCC, "res mismatch");
           } else {
-            assert(res == FOUND);
-            assert(*(int *)newNode->key == key2);
+            Assert(res == FOUND, "must be found");
+            Assert(*(int *)newNode->key == key2, "key mismatch");
           }
         }
       } else {
-        assert(!containerFind(newKey));
-        assert(res == KEY_NOT_FOUND);
+        Assert(!containerFind(newKey), "should not be found");
+        Assert(res == KEY_NOT_FOUND, "res mismatch");
       }
     } break;
     case 6: {
@@ -173,21 +173,21 @@ static void fuzzit(void) {
       enumResult = RBEnumerate(tree, &newKey, &newKey2);
       while ((newNode = StackPop(enumResult))) {
         struct elt_t e;
-        assert(i != -1);
+        Assert(i != -1, "i mismatch");
         e = containerGet(i);
-        assert(e.val == *(int *)newNode->key);
+        Assert(e.val == *(int *)newNode->key, "val mismatch");
         if (nodups)
-          assert(e.info == newNode->info);
+          Assert(e.info == newNode->info, "dups mismatch");
         i = containerNextVal(newKey2, i);
       }
-      assert(i == -1);
+      Assert(i == -1, "another i mismatch");
       free(enumResult);
     } break;
     case 7: {
       RBTreeVerify(tree);
     } break;
     default:
-      assert(0);
+      Assert(0, "unreachable");
     }
   }
   RBTreeVerify(tree);
@@ -199,7 +199,7 @@ static void fuzzit(void) {
         break;
       containerDelete(val);
       if (!(newNode = RBExactQuery(tree, &val)))
-        assert(0);
+        Assert(0, "also unreachable");
       RBDelete(tree, newNode);
     }
   }

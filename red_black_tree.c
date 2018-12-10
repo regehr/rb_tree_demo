@@ -677,7 +677,7 @@ int checkRepHelper(rb_red_blk_node *node, rb_red_blk_tree *t) {
   int left_black_cnt, right_black_cnt;
 
   /* by convention sentinel nodes point to nil instead of null */
-  Assert(node, "nil, not null");
+  Assert(node != 0, "nil, not null");
   if (node == t->nil)
     return 0;
 

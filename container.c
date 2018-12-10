@@ -1,4 +1,5 @@
 #include "container.h"
+#include "misc.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -13,7 +14,7 @@ static struct elt_t array[MAX_SIZE];
 void containerCreate(void) { size = 0; }
 
 void containerInsert(int val, void *info) {
-  assert(size < MAX_SIZE);
+  Assert(size < MAX_SIZE, "too small");
   array[size].val = val;
   array[size].info = info;
   size++;
@@ -41,7 +42,7 @@ void containerDelete(int val) {
     if (array[i].val == val)
       goto remove;
   }
-  assert(0);
+  Assert(0, "unreachable");
 remove:
   for (j = i; j < size; j++) {
     array[j] = array[j + 1];
@@ -122,8 +123,8 @@ int containerStart(void) {
 }
 
 struct elt_t containerGet(int i) {
-  assert(i >= 0);
-  assert(i < size);
+  Assert(i >= 0, "i too small");
+  Assert(i < size, "i too big");
   return array[i];
 }
 
