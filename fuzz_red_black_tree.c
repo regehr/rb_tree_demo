@@ -95,6 +95,7 @@ static void fuzzit(void) {
 
   again:
     option = 1 + my_rand() % 7;
+    printf("option = %d\n", option);
     switch (option) {
     case 1: {
       void *p;
