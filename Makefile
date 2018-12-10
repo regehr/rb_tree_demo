@@ -18,7 +18,7 @@ CC = gcc
 #CC = clang -fsanitize=address,undefined
 
 #CFLAGS = -g -O0 -coverage -fprofile-arcs -Wall -pedantic
-CFLAGS = -O0 -Wall -pedantic
+CFLAGS = -O3 -Wall -pedantic
 
 PROGRAM = test_rb
 
@@ -34,7 +34,7 @@ $(PROGRAM): 	$(OBJS)
 $(PROGRAM2): 	$(OBJS2)
 		$(CC) $(CFLAGS) $(OBJS2) -o $(PROGRAM2) $(DMALLOC_LIB)
 
-mem_check:	
+mem_check:
 		@if [ -e makefile.txt ] ; then \
 			echo "Using makefile.txt" ; \
 			$(MAKE) clean -f makefile.txt ; \
@@ -63,7 +63,7 @@ red_black_tree.o:	red_black_tree.h stack.h red_black_tree.c stack.c misc.h misc.
 
 stack.o:		stack.c stack.h misc.h misc.c
 
-clean:			
+clean:
 	rm -f *.o *~ $(PROGRAM) $(PROGRAM2) *.gcda *.gcno *.gcov unfreed.txt
 
 
