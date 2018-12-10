@@ -7,7 +7,7 @@
 #include <time.h>
 
 #define META_REPS 1
-#define FUZZ_REPS 10000
+#define FUZZ_REPS 3000
 
 /*  this file has functions to test a red-black tree of integers */
 
