@@ -51,6 +51,9 @@ void InorderTreeVerify(rb_red_blk_tree *tree, rb_red_blk_node *x) {
     struct elt_t e;
     InorderTreeVerify(tree, x->left);
     e = containerGet(idx);
+    printf("expecting %d and got %d\n",
+           e.val,
+           *(int *)x->key);
     Assert(e.val == *(int *)x->key, "value mismatch");
     if (nodups)
       Assert(e.info == x->info, "info mismatch");
