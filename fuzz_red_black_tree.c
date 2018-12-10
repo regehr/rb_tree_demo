@@ -110,6 +110,7 @@ static void fuzzit(void) {
       p = randomVoidP();
       RBTreeInsert(tree, newInt, p);
       containerInsert(newKey, p);
+      printf("Inserted %d.\n", newKey);
     } break;
 
     case 2: {
@@ -118,6 +119,7 @@ static void fuzzit(void) {
         Assert(containerFind(newKey), "find");
         RBDelete(tree, newNode); /*assignment*/
         containerDelete(newKey);
+        printf("Deleted %d.\n", newKey);
       } else {
         Assert(!containerFind(newKey), "should not be found");
       }
@@ -130,6 +132,7 @@ static void fuzzit(void) {
       } else {
         Assert(!containerFind(newKey), "should not be found");
       }
+      printf("Find.\n");
     } break;
     case 4: {
       int res, key2;
@@ -148,6 +151,7 @@ static void fuzzit(void) {
       } else {
         Assert(res == KEY_NOT_FOUND, "must not be found");
       }
+      printf("Query pred.\n");
     } break;
     case 5: {
       int res, key2;
@@ -167,6 +171,7 @@ static void fuzzit(void) {
         Assert(!containerFind(newKey), "should not be found");
         Assert(res == KEY_NOT_FOUND, "res mismatch");
       }
+      printf("Query succ.\n");
     } break;
     case 6: {
       int i;
@@ -185,6 +190,7 @@ static void fuzzit(void) {
       }
       Assert(i == -1, "another i mismatch");
       free(enumResult);
+      printf("Enumerate.\n");
     } break;
     case 7: {
       RBTreeVerify(tree);
