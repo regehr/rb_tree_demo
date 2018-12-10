@@ -46,6 +46,8 @@ int idx;
 int nodups;
 
 void InorderTreeVerify(rb_red_blk_tree *tree, rb_red_blk_node *x) {
+  RBTreePrint(tree);
+  printf("\n");
   if (x != tree->nil) {
     struct elt_t e;
     InorderTreeVerify(tree, x->left);
@@ -208,7 +210,8 @@ static void fuzzit(void) {
 int main() {
   int i;
 
-  srand(time(NULL));
+  srand(11);
+  //srand(time(NULL));
 
   for (i = 0; i < META_REPS; i++) {
     fuzzit();
