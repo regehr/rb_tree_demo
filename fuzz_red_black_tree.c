@@ -45,8 +45,6 @@ int idx;
 int nodups;
 
 void InorderTreeVerify(rb_red_blk_tree *tree, rb_red_blk_node *x) {
-  containerPrint();
-  // RBTreePrint(tree);
   printf("\n");
   if (x != tree->nil) {
     struct elt_t e;
@@ -64,6 +62,8 @@ void InorderTreeVerify(rb_red_blk_tree *tree, rb_red_blk_node *x) {
 }
 
 void RBTreeVerify(rb_red_blk_tree *tree) {
+  containerPrint();
+  // RBTreePrint(tree);
   idx = containerStart();
   InorderTreeVerify(tree, tree->root->left);
   Assert(idx == -1, "index should be -1");
@@ -95,6 +95,7 @@ static void fuzzit(void) {
     checkRep(tree);
 
   again:
+    RBTreeVerify(tree);
     option = 1 + my_rand() % 7;
     printf("option = %d\n", option);
     switch (option) {
