@@ -1,9 +1,8 @@
-#include<stdio.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 #ifndef INC_E_MISC_
 #define INC_E_MISC_
-
 
 /*  CONVENTIONS:  All data structures for red-black trees have the prefix */
 /*                "rb_" to prevent name conflicts. */
@@ -20,15 +19,7 @@
 /*                names beginning with "g".  An example of a global */
 /*                variable name is gNewtonsConstant. */
 
-void Assert(int assertion, char* error);
-void * SafeMalloc(size_t size);
+void Assert(int assertion, char *error);
+void *SafeMalloc(size_t size);
 
 #endif
-
-
-
-
-
-
-
-

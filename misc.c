@@ -17,15 +17,12 @@
 /*         DEBUG_ASSERT is undefined. */
 /***********************************************************************/
 
-
-void Assert(int assertion, char* error) {
-  if(!assertion) {
-    printf("Assertion Failed: %s\n",error);
+void Assert(int assertion, char *error) {
+  if (!assertion) {
+    printf("Assertion Failed: %s\n", error);
     exit(-1);
   }
 }
-
-
 
 /***********************************************************************/
 /*  FUNCTION:  SafeMalloc */
@@ -41,20 +38,20 @@ void Assert(int assertion, char* error) {
 /**/
 /***********************************************************************/
 
-void * SafeMalloc(size_t size) {
-  void * result;
+void *SafeMalloc(size_t size) {
+  void *result;
 
-  if ( (result = malloc(size)) ) { /* assignment intentional */
-    return(result);
+  if ((result = malloc(size))) { /* assignment intentional */
+    return (result);
   } else {
     printf("memory overflow: malloc failed in SafeMalloc.");
     printf("  Exiting Program.\n");
     exit(-1);
-    return(0);
+    return (0);
   }
 }
 /*  NullFunction does nothing it is included so that it can be passed */
 /*  as a function to RBTreeCreate when no other suitable function has */
 /*  been defined */
 
-void NullFunction(void * junk) { ; }
+void NullFunction(void *junk) { ; }
