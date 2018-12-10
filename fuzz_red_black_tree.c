@@ -7,7 +7,7 @@
 #include <time.h>
 
 #define META_REPS 1
-#define FUZZ_REPS 100
+#define FUZZ_REPS 10000
 
 /*  this file has functions to test a red-black tree of integers */
 
@@ -29,14 +29,14 @@ void InfoDest(void *a) { ; }
 
 int FUZZ_RANGE;
 
-int randomInt(void) { return rand() % FUZZ_RANGE; }
+int randomInt(void) { return my_rand() % FUZZ_RANGE; }
 
 void *randomVoidP(void) {
   uintptr_t p = 0;
   int i;
   for (i = 0; i < sizeof(p); i++) {
     p <<= 8;
-    p |= rand() % 256;
+    p |= my_rand() % 256;
   }
   return (void *)p;
 }
@@ -76,15 +76,15 @@ static void fuzzit(void) {
   int i;
   int fuzz_reps;
 
-  fuzz_reps = 1 + rand() % FUZZ_REPS;
+  fuzz_reps = 1 + my_rand() % FUZZ_REPS;
 
   tree = RBTreeCreate(IntComp, IntDest, InfoDest, IntPrint, InfoPrint);
   containerCreate();
-  nodups = rand() % 2;
-  if (rand() % 2 == 0) {
-    FUZZ_RANGE = 1 + rand() % fuzz_reps;
+  nodups = my_rand() % 2;
+  if (my_rand() % 2 == 0) {
+    FUZZ_RANGE = 1 + my_rand() % fuzz_reps;
   } else {
-    FUZZ_RANGE = 1 + rand() % RAND_MAX;
+    FUZZ_RANGE = 1 + my_rand() % RAND_MAX;
   }
 
   for (i = 0; i < fuzz_reps; i++) {
@@ -92,7 +92,7 @@ static void fuzzit(void) {
     checkRep(tree);
 
   again:
-    option = 1 + rand() % 7;
+    option = 1 + my_rand() % 7;
     switch (option) {
     case 1: {
       void *p;
@@ -192,7 +192,7 @@ static void fuzzit(void) {
     }
   }
   RBTreeVerify(tree);
-  if (rand() % 2 == 0) {
+  if (my_rand() % 2 == 0) {
     while (1) {
       int val;
       int res = containerRandom(&val);
@@ -210,8 +210,8 @@ static void fuzzit(void) {
 int main() {
   int i;
 
-  srand(11);
-  //srand(time(NULL));
+  my_srand(11);
+  //my_srand(time(NULL));
 
   for (i = 0; i < META_REPS; i++) {
     fuzzit();

@@ -4,6 +4,9 @@
 #include "misc.h"
 #include "stack.h"
 
+void my_srand(int s);
+int my_rand (void);
+
 /*  CONVENTIONS:  All data structures for red-black trees have the prefix */
 /*                "rb_" to prevent name conflicts. */
 /*                                                                      */

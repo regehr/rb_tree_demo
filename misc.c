@@ -1,5 +1,24 @@
 #include "misc.h"
 
+static unsigned state;
+
+void my_srand(int s) {
+  state = s;
+}
+
+int my_rand (void) {
+  /* Algorithm "xor" from p. 4 of Marsaglia, "Xorshift RNGs" */
+  unsigned x;
+  do {
+    x = state;
+    x ^= x << 13;
+    x ^= x >> 17;
+    x ^= x << 5;
+    state = x;
+  } while (x < 0 || x > RAND_MAX);
+  return x;
+}
+
 /***********************************************************************/
 /*  FUNCTION:  void Assert(int assertion, char* error)  */
 /**/

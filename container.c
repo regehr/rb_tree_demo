@@ -29,7 +29,7 @@ int containerFind(int val) {
 int containerRandom(int *res) {
   if (size == 0)
     return 0;
-  *res = array[rand() % size].val;
+  *res = array[my_rand() % size].val;
   return 1;
 }
 
