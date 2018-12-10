@@ -1,5 +1,4 @@
 #include "red_black_tree.h"
-#include <assert.h>
 
 /***********************************************************************/
 /*  FUNCTION:  RBTreeCreate */
@@ -678,7 +677,7 @@ int checkRepHelper(rb_red_blk_node *node, rb_red_blk_tree *t) {
   int left_black_cnt, right_black_cnt;
 
   /* by convention sentinel nodes point to nil instead of null */
-  assert(node);
+  Assert(node, "nil, not null");
   if (node == t->nil)
     return 0;
 
@@ -686,34 +685,34 @@ int checkRepHelper(rb_red_blk_node *node, rb_red_blk_tree *t) {
   /* parents and children must point to each other */
   if (node->left != t->nil) {
     int tmp = t->Compare(node->key, node->left->key);
-    assert(tmp == 0 || tmp == 1);
-    assert(node->left->parent == node);
+    Assert(tmp == 0 || tmp == 1, "bad compare");
+    Assert(node->left->parent == node, "bad left parent");
   }
   if (node->right != t->nil) {
     int tmp = t->Compare(node->key, node->right->key);
-    assert(tmp == 0 || tmp == -1);
-    assert(node->right->parent == node);
+    Assert(tmp == 0 || tmp == -1, "bad compare 2");
+    Assert(node->right->parent == node, "bad right parent");
   }
   if (node->left != t->nil && node->right != t->nil) {
     int tmp = t->Compare(node->left->key, node->right->key);
-    assert(tmp == 0 || tmp == -1);
+    Assert(tmp == 0 || tmp == -1, "bad compare 3");
   }
 
   /* both children of a red node are black */
   if (node->red) {
-    assert(!node->left->red);
-    assert(!node->right->red);
+    Assert(!node->left->red, "bad left");
+    Assert(!node->right->red, "bad right");
   }
 
   /* every root->leaf path has the same number of black nodes */
   left_black_cnt = checkRepHelper(node->left, t);
   right_black_cnt = checkRepHelper(node->right, t);
-  assert(left_black_cnt == right_black_cnt);
+  Assert(left_black_cnt == right_black_cnt, "bad count");
   return left_black_cnt + (node->red ? 0 : 1);
 }
 
 void checkRep(rb_red_blk_tree *tree) {
   /* root is black by convention */
-  assert(!tree->root->left->red);
+  Assert(!tree->root->left->red, "bad red invariant");
   checkRepHelper(tree->root->left, tree);
 }

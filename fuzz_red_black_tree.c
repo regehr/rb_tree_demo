@@ -1,6 +1,5 @@
 #include "container.h"
 #include "red_black_tree.h"
-#include <assert.h>
 #include <ctype.h>
 #include <stdint.h>
 #include <stdio.h>
