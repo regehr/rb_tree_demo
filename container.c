@@ -3,6 +3,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+void my_srand(int s);
+int my_rand (void);
+
 #define MAX_SIZE 10000
 
 static int size;
