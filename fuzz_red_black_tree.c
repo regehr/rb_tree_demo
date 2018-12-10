@@ -45,7 +45,7 @@ int idx;
 int nodups;
 
 void InorderTreeVerify(rb_red_blk_tree *tree, rb_red_blk_node *x) {
-  RBTreePrint(tree);
+  // RBTreePrint(tree);
   printf("\n");
   if (x != tree->nil) {
     struct elt_t e;
